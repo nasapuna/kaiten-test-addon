@@ -1,12 +1,29 @@
 const iframe = Addon.iframe();
 
-const secondPopupContentContainer = document.getElementById('secondPopupContent');
-const closeBtn = document.getElementById('close');
-
-closeBtn.addEventListener('click', () => {
-  iframe.closePopup();
-});
-
-iframe.render(() => {
-  iframe.fitSize(secondPopupContentContainer);
-})
+  const showDateEl = document.getElementById('show-date');
+  const showTestButtonEl = document.getElementById('show-test-button');
+  const submitButton = document.getElementById('submit');
+  
+  iframe.fitSize('#settingsContent');
+  
+  iframe.getSettings()
+    .then(([response]) => {
+      if (!response) {
+        return;
+      }
+  
+      showDateEl.checked = !!response.showDate;
+      showTestButtonEl.checked = !!response.showTestButton;
+    });
+  
+  submitButton.addEventListener('click', () => {
+    const showDate = showDateEl.checked;
+    const showTestButton = showTestButtonEl.checked;
+  
+    iframe.setSettings({
+      showDate,
+      showTestButton,
+    }).then(() => {
+      iframe.closePopup();
+    });
+  });
