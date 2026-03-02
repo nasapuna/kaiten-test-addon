@@ -1,49 +1,25 @@
-function generateArrayWithObjects(length, search = '') {
-  const array = [];
-
-  for (let i = 0; i < length; i++) {
-    const text = `Item ${i}`;
-    array.push({
-      text,
-      secondaryText: search.length ? `search: ${search}` : undefined,
-      callback: function () {
-        console.log(`${text} clicked!`);
-      }
-    });
+(() => {
+  if (typeof Addon === 'undefined') {
+    // Если это сработало — SDK не загрузился, либо страница открыта не в контексте Kaiten.
+    console.error('[addon] Kaiten Web SDK is not loaded: Addon is undefined');
+    return;
   }
 
-  return array;
-}
+  console.log('[addon] initializing…');
 
-Addon.initialize({
-  /**
-   * card_buttons — кнопки/действия аддона, которые видны в карточке в секции Addon Actions
-   * Возвращаем массив: [{ text, callback }, ...]
-   */
-  card_buttons: (ctx) => {
-    // ctx = контекст + доступ к SDK (по доке). Можно логировать и посмотреть, что внутри.
-    console.log("card_buttons ctx:", ctx);
+  Addon.initialize({
+    card_buttons: (buttonsContext) => {
+      console.log('[addon] card_buttons called', buttonsContext);
 
-    return [
-      {
-        text: "Ping",
-        callback: () => {
-          alert("Ping from addon button");
+      return [
+        {
+          text: 'Моё действие',
+          show_if_no_edit_access: true,
+          on_click: async (clickContext) => {
+            console.log('[addon] card_buttons click', { buttonsContext, clickContext });
+          },
         },
-      },
-      {
-        text: "Call backend (/api/ping)",
-        callback: async () => {
-          try {
-            const r = await fetch("/api/ping", { method: "POST" });
-            const data = await r.json().catch(() => ({}));
-            alert(`Backend ok: ${r.status} ${JSON.stringify(data)}`);
-          } catch (e) {
-            console.error(e);
-            alert("Backend error (see console)");
-          }
-        },
-      },
-    ];
-  },
-});
+      ];
+    },
+  });
+})();
