@@ -8,20 +8,10 @@
 </head>
 
 <body>
-  <button id="myBtn">Нажать</button>
+  <h1>Hey there! 👋</h1>
 
-  <script>
-    const kaiten = new KaitenSDK();
-
-    kaiten.onReady(() => {
-      console.log("Addon loaded");
-    });
-
-    document.getElementById("myBtn").onclick = async () => {
-      const context = await kaiten.getContext();
-      alert("Card ID: " + context.card.id);
-    };
-  </script>
+  <p>This is test kaiten addon connect and initialize page</p>
+  <script src="js/client.js"></script>
 </body>
 
 </html>
