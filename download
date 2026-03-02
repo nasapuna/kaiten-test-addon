@@ -1,0 +1,7 @@
+yarn/debug
+node_modules
+yalc.lock
+.tmp
+.idea/
+public/js/kaiten-web-sdk.js
+public/css/kaiten-web-sdk-styles.css

@@ -1,0 +1,1 @@
+const iframe = Addon.iframe();
